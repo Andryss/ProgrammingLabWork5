@@ -1,0 +1,222 @@
+@startuml
+
+package MovieObjects {
+    class JsonMovieCodec {
+    --Fields--
+    --Methods--
+    + static readFromFile(String fileName) : Hashtable<Integer, Movie>
+    - static parseMovie(JsonObject movieJsonObject) : Movie
+    + static writeToFile(String fileName, Hashtable<Integer, Movie> movieHashtable) : void
+    - static buildHashTableElement(Integer key, Movie currentMovie) : JsonObject
+    }
+
+    annotation FieldSetter {
+    fieldName() : String
+    example() : String
+    index() : int
+    }
+
+    class Coordinates {
+    --Fields--
+    - float x
+    - Float y
+    --Constructors--
+    + Coordinates()
+    --Methods--
+    + setX(String xString) : void
+    + setY(String yString) : void
+    + getters
+    + toString, equals, hashCode
+    }
+
+    class Person {
+    --Fields--
+    - String name
+    - Date birthday
+    - Color hairColor
+    --Constructors--
+    + Person()
+    --Methods--
+    + setName(String name) : void
+    + setBirthday(String birthday) : void
+    + setHairColor(String hairColor) : void
+    + getBirthdayString() : String
+    + getters
+    + toString, equals, hashCode
+    --InnerClasses--
+    + enum Color
+    }
+
+    enum Color {
+    RED
+    BLACK
+    BLUE
+    WHITE
+    BROWN
+    }
+
+    Color -up-+ Person
+
+    class Movie {
+    --Fields--
+    - final long id
+    - String name
+    - Coordinates coordinates
+    - final ZonedDateTime creationDate
+    - long oscarsCount
+    - int length
+    - MovieGenre genre
+    - MpaaRating mpaaRating
+    - Person screenwriter
+    ~ static long global_id = 1
+    --Constructors--
+    + Movie()
+    + Movie(long id, ZonedDateTime creationDate)
+    --Methods--
+    ~ static loadGlobalId(String globalIdString) : void
+    + setName(String name) : void
+    + setCoordinates(Coordinates coordinates) : void
+    + setOscarsCount(String oscarsCountString) : void
+    + setLength(String lengthString) : void
+    + setGenre(String genre) : void
+    + setMpaaRating(String mpaaRating) : void
+    + setScreenwriter(Person screenwriter) : void
+    + compareTo(Movie anotherMovie) : int
+    + getters
+    + toString, equals, hashCode
+    --InnerClasses--
+    + enum MpaaRating
+    + enum MovieGenre
+    }
+
+    enum MpaaRating {
+    G
+    PG
+    PG_13
+    R
+    NC_17
+    }
+
+    enum MovieGenre {
+    ACTION
+    WESTERN
+    DRAMA
+    COMEDY
+    HORROR
+    }
+
+    MpaaRating -up-+ Movie
+    MovieGenre -up-+ Movie
+
+    class FieldException {
+    --Fields--
+    - final String value
+    - final String required
+    --Constructors--
+    + FieldException(String value, String required)
+    --Methods--
+    + getMessage() : String
+    }
+}
+
+
+package ReadersExecutors {
+    class CommandException {
+    --Fields--
+    - final String command
+    - final String reason
+    --Constructors--
+    + CommandException(String command)
+    + CommandException(String command, String reason)
+    --Methods--
+    + getCommand() : String
+    + getReason() : String
+    + getMessage() : String
+    }
+
+    class UndefinedCommandException extends CommandException {
+    --Fields--
+    --Constructors--
+    + UndefinedCommandException(String command)
+    --Methods--
+    + getMessage() : String
+    }
+
+    abstract class Shell {
+    --Fields--
+    - static final String envName = "MovieFile"
+    - static String envFilename
+    # static Hashtable<Integer, Movie> movieHashtable
+    # Scanner reader
+    # Executor executor
+    --Methods--
+    # static setEnvFilename() : void
+    # static loadMovieHashtable() : void
+    # readCommand() : String
+    # executeCommand(String command, ExecuteState state) : void
+    + abstract run() : void
+    + static getEnvFilename() : String
+    }
+
+    class CMDShell extends Shell {
+    --Fields--
+    - static final CMDShell instance = new CMDShell()
+    --Constructors--
+    - CMDShell()
+    --Methods--
+    - static getInstance() : CMDShell
+    - initialization() : void
+    + run() : void
+    }
+
+    class FileShell extends Shell {
+    --Fields--
+    - final String fileName
+    - final FileShell caller
+    - int commandNumber = 0
+    --Constructors--
+    + FileShell(String fileName, FileShell caller)
+    --Methods--
+    # readCommand() : String
+    - initReaderExecutor(Hashtable<Integer, Movie> initHashtable) : void
+    + run() : void
+    + validate(Hashtable<Integer, Movie> hashtable) : void
+    + getters
+    }
+
+    class Executor {
+    --Fields--
+    # final Hashtable<Integer, Movie> movieHashtable
+    # final Map<String, Command> commandMap = new HashMap<>()
+    # final List<String> history = new ArrayList<>()
+    --Constructors--
+    + Executor(Hashtable<Integer, Movie> movieHashtable)
+    --Methods--
+    - createCommandMap() : void
+    + executeCommand(String commandName, String[] args, ExecuteState state) : void
+    --InnerClasses--
+    + enum ExecuteState
+    }
+
+    enum ExecuteState {
+    EXECUTE
+    VALIDATE
+    }
+
+    ExecuteState -up-+ Executor
+
+    class FileExecutor extends Executor {
+    --Fields--
+    - final FileShell caller
+    --Constructors--
+    + FileExecutor(Hashtable<Integer, Movie> movieHashtable, FileShell caller)
+    --Methods--
+    - updateCommandMap() : void
+    }
+}
+
+class Exception {}
+FieldException -up-|> Exception
+CommandException -up-|> Exception
+
+@enduml

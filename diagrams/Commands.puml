@@ -1,0 +1,241 @@
+@startuml
+
+package Commands {
+    interface Command {
+    --Methods--
+    execute(ExecuteState state) : boolean
+    setArgs(String... args) : void
+    }
+
+    abstract class NameableCommand implements Command {
+    --Fields--
+    - final String commandName
+    --Constructors--
+    + NameableCommand(String commandName)
+    --Methods--
+    + getCommandName() : String
+    }
+
+    abstract class HashTableCommand extends NameableCommand {
+    --Fields--
+    - final Hashtable<Integer, Movie> movieHashtable
+    --Constructors--
+    + HashTableCommand(String commandName, Hashtable<Integer, Movie> movieHashtable)
+    --Methods--
+    + getMovieHashtable() : Hashtable<Integer, Movie>
+    }
+
+    abstract class FileCommand extends HashTableCommand {
+    --Fields--
+    - final String fileName
+    --Constructors--
+    + FileCommand(String commandName, String fileName, Hashtable<Integer, Movie> movieHashtable)
+    --Methods--
+    + getFileName() : String
+    }
+
+    abstract class ElementCommand extends HashTableCommand {
+    --Fields--
+    - static final Map<String, String> fieldExamples = new HashMap<>()
+    - static final Map<String, Method> methodsSetters = new HashMap<>()
+    - static final Map<Integer, String> order = new HashMap<>()
+    - final boolean askQuestions
+    # Scanner reader
+    --Constructors--
+    + ElementCommand(String commandName, Scanner scanner, Hashtable<Integer, Movie> movieHashtable, boolean askQuestions)
+    --Methods--
+    - static fillMethodsSetters(Map<String, Method> emptyMethodsSetters, Class<?> cls) : void
+    # readOneField(String fieldName) : String
+    # setOneField(Object object, String fieldName, Method method) : void
+    # readMovie(Executor.ExecuteState state) : Movie
+    }
+
+    class BadArgumentsException {
+    --Fields--
+    - static final Map<String, String> examples = new HashMap<>()
+    --Constructors--
+    + BadArgumentsException(String command)
+    + BadArgumentsException(String command, String reason)
+    --Methods--
+    + static getExamples() : Map<String, String>
+    + getMessage() : String
+    }
+
+    class BadArgumentsCountException extends BadArgumentsException {
+    --Fields--
+    - final int requiredCount
+    --Constructors--
+    + BadArgumentsCountException(String command, int requiredCount)
+    + BadArgumentsCountException(String command)
+    --Methods--
+    + getMessage() : String
+    }
+
+    class BadArgumentsFormatException extends BadArgumentsException {
+    --Fields--
+    - final String requiredFormat
+    --Constructors--
+    + BadArgumentsFormatException(String command, String requiredFormat)
+    --Methods--
+    + getMessage() : String
+    }
+
+    class ExitCommand extends NameableCommand {
+    --Fields--
+    --Constructors--
+    + ExitCommand(String commandName)
+    --Methods--
+    + execute(ExecuteState state) : boolean
+    + setArgs(String... args) : void
+    }
+
+    class HelpCommand extends NameableCommand {
+    --Fields--
+    --Constructors--
+    + HelpCommand(String commandName)
+    --Methods--
+    + execute(ExecuteState state) : boolean
+    + setArgs(String... args) : void
+    }
+
+    class HistoryCommand extends NameableCommand {
+    --Fields--
+    - final List<String> history
+    --Constructors--
+    + HistoryCommand(String commandName, List<String> history)
+    --Methods--
+    + execute(ExecuteState state) : boolean
+    + setArgs(String... args) : void
+    }
+
+    class ClearCommand extends HashTableCommand {
+    --Fields--
+    --Constructors--
+    + ClearCommand(String commandName, Hashtable<Integer, Movie> movieHashtable)
+    --Methods--
+    + execute(ExecuteState state) : boolean
+    + setArgs(String... args) : void
+    }
+
+    class CountLessThenLengthCommand extends HashTableCommand {
+    --Fields--
+    - int length
+    --Constructors--
+    + CountLessThenLengthCommand(String commandName, Hashtable<Integer, Movie> movieHashtable)
+    --Methods--
+    + execute(ExecuteState state) : boolean
+    + setArgs(String... args) : void
+    }
+
+    class ExecuteScriptCommand extends HashTableCommand {
+    --Fields--
+    - final FileShell caller
+    - File file
+    --Constructors--
+    + ExecuteScriptCommand(String commandName, Hashtable<Integer, Movie> movieHashtable, FileShell caller)
+    --Methods--
+    + execute(ExecuteState state) : boolean
+    + setArgs(String... args) : void
+    }
+
+    class FilterByMpaaRatingCommand extends HashTableCommand {
+    --Fields--
+    - MpaaRating mpaaRating
+    --Constructors--
+    + FilterByMpaaRatingCommand(String commandName, Hashtable<Integer, Movie> movieHashtable)
+    --Methods--
+    + execute(ExecuteState state) : boolean
+    + setArgs(String... args) : void
+    }
+
+    class GroupCountingByLengthCommand extends HashTableCommand {
+    --Fields--
+    --Constructors--
+    + GroupCountingByLengthCommand(String commandName, Hashtable<Integer, Movie> movieHashtable)
+    --Methods--
+    + execute(ExecuteState state) : boolean
+    + setArgs(String... args) : void
+    }
+
+    class RemoveKeyCommand extends HashTableCommand {
+    --Fields--
+    - Integer key
+    --Constructors--
+    + RemoveKeyCommand(String commandName, Hashtable<Integer, Movie> movieHashtable)
+    --Methods--
+    + execute(ExecuteState state) : boolean
+    + setArgs(String... args) : void
+    }
+
+    class RemoveLowerKeyCommand extends HashTableCommand {
+    --Fields--
+    - Integer key
+    --Constructors--
+    + RemoveLowerKeyCommand(String commandName, Hashtable<Integer, Movie> movieHashtable)
+    --Methods--
+    + execute(ExecuteState state) : boolean
+    + setArgs(String... args) : void
+    }
+
+    class ShowCommand extends HashTableCommand {
+    --Fields--
+    --Constructors--
+    + ShowCommand(String commandName, Hashtable<Integer, Movie> movieHashtable)
+    --Methods--
+    + execute(ExecuteState state) : boolean
+    + setArgs(String... args) : void
+    }
+
+    class InfoCommand extends FileCommand {
+    --Fields--
+    --Constructors--
+    + InfoCommand(String commandName, String fileName, Hashtable<Integer, Movie> movieHashtable)
+    --Methods--
+    + execute(ExecuteState state) : boolean
+    + setArgs(String... args) : void
+    }
+
+    class SaveCommand extends FileCommand {
+    --Fields--
+    --Constructors--
+    + SaveCommand(String commandName, String fileName, Hashtable<Integer, Movie> movieHashtable)
+    --Methods--
+    + execute(ExecuteState state) : boolean
+    + setArgs(String... args) : void
+    }
+
+    class InsertCommand extends ElementCommand {
+    --Fields--
+    - Integer key
+    --Constructors--
+    + InsertCommand(String commandName, Scanner scanner, Hashtable<Integer, Movie> movieHashtable)
+    + InsertCommand(String commandName, Scanner scanner, Hashtable<Integer, Movie> movieHashtable, boolean askQuestions)
+    --Methods--
+    + execute(ExecuteState state) : boolean
+    + setArgs(String... args) : void
+    }
+
+    class ReplaceIfGreaterCommand extends ElementCommand {
+    --Fields--
+    - Integer key
+    --Constructors--
+    + ReplaceIfGreaterCommand(String commandName, Scanner scanner, Hashtable<Integer, Movie> movieHashtable)
+    + ReplaceIfGreaterCommand(String commandName, Scanner scanner, Hashtable<Integer, Movie> movieHashtable, boolean askQuestions)
+    --Methods--
+    + execute(ExecuteState state) : boolean
+    + setArgs(String... args) : void
+    }
+
+    class UpdateCommand extends ElementCommand {
+    --Fields--
+    - Integer key
+    --Constructors--
+    + UpdateCommand(String commandName, Scanner scanner, Hashtable<Integer, Movie> movieHashtable)
+    + UpdateCommand(String commandName, Scanner scanner, Hashtable<Integer, Movie> movieHashtable, boolean asqQuestions)
+    --Methods--
+    + execute(ExecuteState state) : boolean
+    + setArgs(String... args) : void
+    }
+}
+
+@enduml
