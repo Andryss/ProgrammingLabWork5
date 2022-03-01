@@ -5,6 +5,7 @@ import MovieObjects.*;
 
 import java.io.IOException;
 import java.util.Hashtable;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 /**
@@ -40,6 +41,9 @@ public abstract class Shell {
      */
     protected static void setEnvFilename() throws SecurityException {
         envFilename = System.getenv(envName);
+        if (envFilename == null) {
+            throw new NullPointerException("\u001B[31m" + "ERROR: environmental variable with name \"MovieFile\" doesn't exists" + "\u001B[0m");
+        }
     }
 
     /**
@@ -57,7 +61,11 @@ public abstract class Shell {
      * @return read command
      */
     protected String readCommand() {
-        return reader.nextLine();
+        try {
+            return reader.nextLine();
+        } catch (NoSuchElementException e) {
+            throw new RuntimeException("\u001B[31m" + "ERROR: incorrect input" + "\u001B[0m", e);
+        }
     }
 
     /**

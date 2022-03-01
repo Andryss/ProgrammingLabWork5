@@ -108,7 +108,7 @@ public class Movie implements Comparable<Movie>{
                 throw new FieldException(String.valueOf(oscarsCount), "Value must be more than 0");
             }
             this.oscarsCount = oscarsCount;
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException | NullPointerException e) {
             throw new FieldException(oscarsCountString, "Value must be long");
         }
     }
@@ -125,7 +125,7 @@ public class Movie implements Comparable<Movie>{
                 throw new FieldException(String.valueOf(length), "Value must be more than 0");
             }
             this.length = length;
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException | NullPointerException e) {
             throw new FieldException(lengthString, "Value must be integer");
         }
     }

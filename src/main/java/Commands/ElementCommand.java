@@ -90,7 +90,7 @@ public abstract class ElementCommand extends HashTableCommand {
         if (askQuestions) {
             System.out.print("Enter " + fieldName + " (" + fieldExamples.get(fieldName) + "): ");
         }
-        String command = reader.nextLine();
+        String command = reader.nextLine().trim();
         return (command.equals("") ? null : command);
     }
 
@@ -110,7 +110,7 @@ public abstract class ElementCommand extends HashTableCommand {
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             } catch (NoSuchElementException e) {
-                throw new RuntimeException("the file ended before the element was read", e);
+                throw new RuntimeException("the input ended before the element was read", e);
             }
         }
     }

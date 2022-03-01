@@ -30,7 +30,7 @@ public class Coordinates {
                 throw new NumberFormatException();
             }
             this.x = x;
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException | NullPointerException e) {
             throw new FieldException(xString, "Value must be float");
         }
     }
@@ -47,7 +47,7 @@ public class Coordinates {
                 throw new NumberFormatException();
             }
             this.y = y;
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException | NullPointerException e) {
             throw new FieldException(yString, "Value must be float");
         }
     }

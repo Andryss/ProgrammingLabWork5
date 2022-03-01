@@ -66,12 +66,22 @@ public class CMDShell extends Shell {
     public void run() throws FieldException, IOException {
         initialization();
         while (true) {
-            String command = readCommand();
             try {
-                executeCommand(command, Executor.ExecuteState.EXECUTE);
-            } catch (CommandException e) {
-                System.out.println(e.getMessage());
+                String command = readCommand();
+                try {
+                    executeCommand(command, Executor.ExecuteState.EXECUTE);
+                } catch (CommandException e) {
+                    System.out.println(e.getMessage());
+                }
+            } catch (RuntimeException e) {
+                if (e.getCause() instanceof NoSuchElementException) {
+                    System.out.println("\u001B[31m" + "ERROR: incorrect input" + "\u001B[0m");
+                    System.exit(1);
+                } else {
+                    throw e;
+                }
             }
+
         }
     }
 }
