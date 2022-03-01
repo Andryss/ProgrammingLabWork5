@@ -48,6 +48,8 @@ package Commands {
     # readOneField(String fieldName) : String
     # setOneField(Object object, String fieldName, Method method) : void
     # readMovie(Executor.ExecuteState state) : Movie
+    + execute(ExecuteState state) : boolean
+    # abstract actionWithNewMovie(Movie movie, Executor.ExecuteState state) : void
     }
 
     class BadArgumentsException {
@@ -211,7 +213,7 @@ package Commands {
     + InsertCommand(String commandName, Scanner scanner, Hashtable<Integer, Movie> movieHashtable)
     + InsertCommand(String commandName, Scanner scanner, Hashtable<Integer, Movie> movieHashtable, boolean askQuestions)
     --Methods--
-    + execute(ExecuteState state) : boolean
+    # actionWithNewMovie(Movie movie, Executor.ExecuteState state) : void
     + setArgs(String... args) : void
     }
 
@@ -222,7 +224,7 @@ package Commands {
     + ReplaceIfGreaterCommand(String commandName, Scanner scanner, Hashtable<Integer, Movie> movieHashtable)
     + ReplaceIfGreaterCommand(String commandName, Scanner scanner, Hashtable<Integer, Movie> movieHashtable, boolean askQuestions)
     --Methods--
-    + execute(ExecuteState state) : boolean
+    # actionWithNewMovie(Movie movie, Executor.ExecuteState state) : void
     + setArgs(String... args) : void
     }
 
@@ -233,7 +235,7 @@ package Commands {
     + UpdateCommand(String commandName, Scanner scanner, Hashtable<Integer, Movie> movieHashtable)
     + UpdateCommand(String commandName, Scanner scanner, Hashtable<Integer, Movie> movieHashtable, boolean asqQuestions)
     --Methods--
-    + execute(ExecuteState state) : boolean
+    # actionWithNewMovie(Movie movie, Executor.ExecuteState state) : void
     + setArgs(String... args) : void
     }
 }

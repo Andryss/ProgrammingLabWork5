@@ -73,15 +73,10 @@ public class CMDShell extends Shell {
                 } catch (CommandException e) {
                     System.out.println(e.getMessage());
                 }
-            } catch (RuntimeException e) {
-                if (e.getCause() instanceof NoSuchElementException) {
-                    System.out.println("\u001B[31m" + "ERROR: incorrect input" + "\u001B[0m");
-                    System.exit(1);
-                } else {
-                    throw e;
-                }
+            } catch (NoSuchElementException e) {
+                System.out.println(e.getMessage());
+                break;
             }
-
         }
     }
 }

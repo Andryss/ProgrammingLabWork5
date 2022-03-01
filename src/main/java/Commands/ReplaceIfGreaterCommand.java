@@ -26,15 +26,12 @@ public class ReplaceIfGreaterCommand extends ElementCommand {
     }
 
     /**
-     * @param state tells method "to validate" or "to execute"
-     * @see ReadersExecutors.Executor.ExecuteState
-     * @see Command
+     * @see ElementCommand
      */
     @Override
-    public boolean execute(Executor.ExecuteState state) {
-        Movie newMovie = readMovie(state);
-        if (newMovie.compareTo(getMovieHashtable().get(key)) > 0) {
-            getMovieHashtable().put(key, newMovie);
+    protected void actionWithNewMovie(Movie movie, Executor.ExecuteState state) {
+        if (movie.compareTo(getMovieHashtable().get(key)) > 0) {
+            getMovieHashtable().put(key, movie);
             if (state == Executor.ExecuteState.EXECUTE) {
                 System.out.println("Element greater than the old one has been inserted");
             }
@@ -43,7 +40,6 @@ public class ReplaceIfGreaterCommand extends ElementCommand {
                 System.out.println("Nothing was happened");
             }
         }
-        return true;
     }
 
     /**

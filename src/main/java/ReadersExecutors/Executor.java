@@ -78,10 +78,8 @@ public class Executor {
                 if (!command.execute(state)) {
                     throw new CommandException(commandName, "can't be executed");
                 }
-            } catch (RuntimeException e) {
-                if (e.getCause() instanceof NoSuchElementException) {
-                    throw new CommandException(commandName, e.getMessage());
-                }
+            } catch (NoSuchElementException e) {
+                throw new CommandException(commandName, e.getMessage());
             }
         } else {
             throw new RuntimeException("ExecutionState \"" + state + "\" doesn't exist");

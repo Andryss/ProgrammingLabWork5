@@ -60,11 +60,11 @@ public abstract class Shell {
      * Method, which read new command from reader
      * @return read command
      */
-    protected String readCommand() {
+    protected String readCommand() throws NoSuchElementException {
         try {
             return reader.nextLine();
         } catch (NoSuchElementException e) {
-            throw new RuntimeException("\u001B[31m" + "ERROR: incorrect input" + "\u001B[0m", e);
+            throw new NoSuchElementException("\u001B[31m" + "ERROR: incorrect input (input ended)" + "\u001B[0m");
         }
     }
 

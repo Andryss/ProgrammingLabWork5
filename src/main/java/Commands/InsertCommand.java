@@ -3,7 +3,9 @@ package Commands;
 import MovieObjects.Movie;
 import ReadersExecutors.Executor;
 
+import javax.xml.bind.ValidationEvent;
 import java.util.Hashtable;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 /**
@@ -26,15 +28,11 @@ public class InsertCommand extends ElementCommand {
     }
 
     /**
-     * @param state tells method "to validate" or "to execute"
-     * @see ReadersExecutors.Executor.ExecuteState
-     * @see Command
+     * @see ElementCommand
      */
     @Override
-    public boolean execute(Executor.ExecuteState state) {
-        Movie newMovie = readMovie(state);
-        getMovieHashtable().put(key, newMovie);
-        return true;
+    protected void actionWithNewMovie(Movie movie, Executor.ExecuteState state) {
+        getMovieHashtable().put(key, movie);
     }
 
     /**

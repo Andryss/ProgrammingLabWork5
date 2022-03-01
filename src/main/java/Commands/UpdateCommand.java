@@ -26,18 +26,14 @@ public class UpdateCommand extends ElementCommand {
     }
 
     /**
-     * @param state tells method "to validate" or "to execute"
-     * @see ReadersExecutors.Executor.ExecuteState
-     * @see Command
+     * @see ElementCommand
      */
     @Override
-    public boolean execute(Executor.ExecuteState state) {
-        Movie newMovie = readMovie(state);
-        getMovieHashtable().put(key, newMovie);
+    protected void actionWithNewMovie(Movie movie, Executor.ExecuteState state) {
+        getMovieHashtable().put(key, movie);
         if (state == Executor.ExecuteState.EXECUTE) {
             System.out.println("The movie has been updated");
         }
-        return true;
     }
 
     /**
@@ -51,7 +47,7 @@ public class UpdateCommand extends ElementCommand {
         }
         try {
             Integer key = Integer.parseInt(args[0]);
-            if (!getMovieHashtable().keySet().contains(key)) {
+            if (!getMovieHashtable().containsKey(key)) {
                 throw new BadArgumentsException(getCommandName(), "movie with key \"" + key + "\" doesn't exists");
             }
             this.key = key;

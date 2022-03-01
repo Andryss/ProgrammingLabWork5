@@ -86,7 +86,7 @@ public abstract class ElementCommand extends HashTableCommand {
      * @param fieldName name of field we read
      * @return string - user input or null
      */
-    protected String readOneField(String fieldName) {
+    protected String readOneField(String fieldName) throws NoSuchElementException {
         if (askQuestions) {
             System.out.print("Enter " + fieldName + " (" + fieldExamples.get(fieldName) + "): ");
         }
@@ -100,7 +100,7 @@ public abstract class ElementCommand extends HashTableCommand {
      * @param fieldName name of field we set
      * @param method setter we invoke
      */
-    protected void setOneField(Object object, String fieldName, Method method) {
+    protected void setOneField(Object object, String fieldName, Method method) throws NoSuchElementException {
         while (true) {
             try {
                 method.invoke(object, readOneField(fieldName));
@@ -109,8 +109,6 @@ public abstract class ElementCommand extends HashTableCommand {
                 System.out.println(e.getCause().getMessage());
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
-            } catch (NoSuchElementException e) {
-                throw new RuntimeException("the input ended before the element was read", e);
             }
         }
     }
@@ -120,7 +118,7 @@ public abstract class ElementCommand extends HashTableCommand {
      * @param state are we validating of executing
      * @return reader Movie element
      */
-    protected Movie readMovie(Executor.ExecuteState state) {
+    protected Movie readMovie(Executor.ExecuteState state) throws NoSuchElementException {
         if (state == Executor.ExecuteState.EXECUTE) {
             System.out.println("*reading Movie object starts*");
         }
@@ -147,4 +145,35 @@ public abstract class ElementCommand extends HashTableCommand {
         }
         return newMovie;
     }
+
+    /**
+     * Contains main logic of all element commands: read Movie, act with new Movie
+     * @param state tells method "to validate" or "to execute"
+     * @see Command
+     */
+    @Override
+    public boolean execute(Executor.ExecuteState state) {
+        try {
+            Movie newMovie = readMovie(state);
+            actionWithNewMovie(newMovie, state);
+            return true;
+        } catch (NoSuchElementException e) {
+            if (state == Executor.ExecuteState.EXECUTE) {
+                System.out.println("\u001B[31m" + "ERROR: command \"" + getCommandName() + "\" interrupted - incorrect field value" + "\u001B[0m");
+                reader = new Scanner(System.in);
+                return false;
+            } else if (state == Executor.ExecuteState.VALIDATE) {
+                throw new NoSuchElementException("file ended before command \"" + getCommandName() + "\" completed");
+            } else {
+                throw new IllegalArgumentException("another ExecuteState????");
+            }
+        }
+    }
+
+    /**
+     * Method, which does some actions with the recently read element
+     * @param movie read element
+     * @param state tells method "to validate" or "to execute"
+     */
+    protected abstract void actionWithNewMovie(Movie movie, Executor.ExecuteState state);
 }
