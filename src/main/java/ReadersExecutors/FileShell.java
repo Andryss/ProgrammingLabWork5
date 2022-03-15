@@ -67,8 +67,7 @@ public class FileShell extends Shell {
             try {
                 executeCommand(command, Executor.ExecuteState.EXECUTE);
             } catch (CommandException e) {
-                throw new CommandException(e.getCommand(), "file \"" + fileName + "\" command " + commandNumber + " \"" + command + "\" - " +
-                        e.getMessage().substring(5, e.getMessage().length() - 4));
+                throw new CommandException(e.getCommand(), "file \"" + fileName + "\" command " + commandNumber + " \"" + command + "\" - " + e.getMessage());
             }
         }
     }
@@ -86,8 +85,7 @@ public class FileShell extends Shell {
             try {
                 executeCommand(command, Executor.ExecuteState.VALIDATE);
             } catch (CommandException e) {
-                throw new CommandException(e.getCommand(), "file \"" + fileName + "\" command " + commandNumber + " \"" + command + "\" - " +
-                        e.getMessage().substring(5, e.getMessage().length() - 4));
+                throw new CommandException(e.getCommand(), "file \"" + fileName + "\" command " + commandNumber + " \"" + command + "\" - " + e.getMessage());
             }
         }
     }

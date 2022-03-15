@@ -12,6 +12,6 @@ public class UndefinedCommandException extends CommandException {
 
     @Override
     public String getMessage() {
-        return "\u001B[31m" + "ERROR: undefined command \"" + getCommand() + "\" (type \"help\" to see list of commands)" + "\u001B[0m";
+        return "ERROR: undefined command \"" + getCommand() + "\" (type \"help\" to see list of commands)";
     }
 }

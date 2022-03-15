@@ -159,7 +159,7 @@ public abstract class ElementCommand extends HashTableCommand {
             return true;
         } catch (NoSuchElementException e) {
             if (state == Executor.ExecuteState.EXECUTE) {
-                System.out.println("\u001B[31m" + "ERROR: command \"" + getCommandName() + "\" interrupted - incorrect field value" + "\u001B[0m");
+                System.err.println("ERROR: command \"" + getCommandName() + "\" interrupted - incorrect field value");
                 reader = new Scanner(System.in);
                 return false;
             } else if (state == Executor.ExecuteState.VALIDATE) {

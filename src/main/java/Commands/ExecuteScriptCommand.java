@@ -52,7 +52,7 @@ public class ExecuteScriptCommand extends HashTableCommand {
             e.printStackTrace();
             return false;
         } catch (CommandException e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
             return false;
         }
         return true;

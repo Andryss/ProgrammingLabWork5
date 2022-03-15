@@ -21,7 +21,7 @@ public class BadArgumentsFormatException extends BadArgumentsException {
 
     @Override
     public String getMessage() {
-        return "\u001B[31m" + "ERROR: argument for command \"" + getCommand() + "\" - must be " + requiredFormat +
-                " (example: \"" + getExamples().get(getCommand()) + "\")" + "\u001B[0m";
+        return "ERROR: argument for command \"" + getCommand() + "\" - must be " + requiredFormat +
+                " (example: \"" + getExamples().get(getCommand()) + "\")";
     }
 }

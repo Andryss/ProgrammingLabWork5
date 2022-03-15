@@ -25,6 +25,6 @@ public class FieldException extends Exception {
 
     @Override
     public String getMessage() {
-        return "\u001B[31m" + "ERROR: Not supported value \"" + value + "\". " + required + "\u001B[0m";
+        return "ERROR: Not supported value \"" + value + "\". " + required;
     }
 }

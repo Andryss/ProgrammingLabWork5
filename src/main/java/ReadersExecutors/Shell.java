@@ -64,7 +64,7 @@ public abstract class Shell {
         try {
             return reader.nextLine();
         } catch (NoSuchElementException e) {
-            throw new NoSuchElementException("\u001B[31m" + "ERROR: incorrect input (input ended)" + "\u001B[0m");
+            throw new NoSuchElementException("ERROR: incorrect input (input ended)");
         }
     }
 

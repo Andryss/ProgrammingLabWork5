@@ -58,13 +58,13 @@ public class BadArgumentsException extends CommandException {
     @Override
     public String getMessage() {
         if (getReason() != null) {
-            return "\u001B[31m" + "ERROR: bad arguments command \"" + getCommand() + "\" (" + getReason() + ")" + "\u001B[0m";
+            return "ERROR: bad arguments command \"" + getCommand() + "\" (" + getReason() + ")";
         }
         String example = examples.get(getCommand());
         if (example != null) {
-            return "\u001B[31m" + "ERROR: bad arguments command \"" + getCommand() + "\" (example: \"" + examples.get(getCommand()) + "\")" + "\u001B[0m";
+            return "ERROR: bad arguments command \"" + getCommand() + "\" (example: \"" + examples.get(getCommand()) + "\")";
         } else {
-            return "\u001B[31m" + "ERROR: bad arguments command \"" + getCommand() + "\" (try another variations)" + "\u001B[0m";
+            return "ERROR: bad arguments command \"" + getCommand() + "\" (try another variations)";
         }
     }
 }

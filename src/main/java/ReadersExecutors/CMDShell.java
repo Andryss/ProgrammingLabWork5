@@ -71,10 +71,10 @@ public class CMDShell extends Shell {
                 try {
                     executeCommand(command, Executor.ExecuteState.EXECUTE);
                 } catch (CommandException e) {
-                    System.out.println(e.getMessage());
+                    System.err.println(e.getMessage());
                 }
             } catch (NoSuchElementException e) {
-                System.out.println(e.getMessage());
+                System.err.println(e.getMessage());
                 break;
             }
         }

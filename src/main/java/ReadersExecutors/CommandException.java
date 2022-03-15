@@ -42,8 +42,8 @@ public class CommandException extends Exception {
     @Override
     public String getMessage() {
         if (reason != null) {
-            return "\u001B[31m" + "ERROR: problem with command \"" + command + "\" (" + reason + ")" + "\u001B[0m";
+            return "ERROR: problem with command \"" + command + "\" (" + reason + ")";
         }
-        return "\u001B[31m" + "ERROR: some problems with command \"" + command + "\"" + "\u001B[0m";
+        return "ERROR: some problems with command \"" + command + "\"";
     }
 }
